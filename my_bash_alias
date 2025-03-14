@@ -31,7 +31,7 @@ ffuf() {
 
 alias secretfinder="python3 /usr/local/bin/SecretFinder.py"
 
-#urls_extension_finder----------------------------------->
+#urls_extension_finder----------------------------------------------->
 urls_extension_finder() {
     if [[ -z "$1" ]]; then
         echo "Usage: urls_extension_finder <domain>"
@@ -57,7 +57,7 @@ urls_extension_finder() {
     fi
 }
 
-#ultra_subs_finder--------------------------->
+#ultra_subs_finder--------------------------------------------->
 ultra_subs_finder() {
 # Check if a domain is provided
 if [ -z "$1" ]; then
@@ -106,7 +106,7 @@ echo -e "\033[1;34m[+] Subdomain enumeration completed!\033[0m"
 echo -e "\033[1;32m[+] Results saved in $output_file\033[0m"
 }
 
-#http_hv_finder--------------------------->
+#http_hv_finder------------------------------------------------->
 http_hv_finder() {
     # Define color codes
 GREEN="\e[32m"
