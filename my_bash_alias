@@ -1,4 +1,4 @@
-#tools_bash_profile
+#my_bash_alias
 
 #cleane output.txt from hackerone csv file
 myscope() {
