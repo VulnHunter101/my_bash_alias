@@ -1,12 +1,13 @@
 #my_bash_alias
 
+alias secretfinder="python3 /usr/local/bin/SecretFinder.py"
+
 #cleane output.txt from hackerone csv file
 myscope() {
     command grep "WILDCARD" "$1" | awk -F',' '{print $1}' > wildcard_domains.txt && grep "URL" "$1" | awk -F',' '{print $1}' > urls_domains.txt
 }
 
-
-#crtsh
+#crtsh------------------------------------------------>
 crtsh() {
     if [ -z "$1" ]; then
         echo "Usage: crtsh <domain>"
@@ -19,7 +20,7 @@ crtsh() {
     curl -s "$url" | jq -r '.[].name_value' | sed 's/\*\.//g' | sort -u
 }
 
-#dirsearch
+#dirsearch---------------------------------------------->
 dirsearch() {
     command dirsearch -u "$1" -e html,php,js,json,yaml,env -t 100  -F -w "$2"
 }
@@ -29,35 +30,13 @@ ffuf() {
     command ffuf -u "$1"FUZZ -w "$2" -t "${3:-100}" -c -ac -mc "${4:-200,204,301,307,401,405,400,302}" | tee "${5:-ffuf_results.txt}"
 }
 
-alias secretfinder="python3 /usr/local/bin/SecretFinder.py"
-
-#urls_extension_finder----------------------------------------------->
-urls_extension_finder() {
-    if [[ -z "$1" ]]; then
-        echo "Usage: urls_extension_finder <domain>"
-        return 1
-    fi
-
-    output_file="${1}_urls_$(date +%Y-%m-%d).txt"
-
-    echo "Fetching URLs with specific extensions for $1 from Wayback Machine..."
-    curl -sG "https://web.archive.org/cdx/search/cdx" \
-        --data-urlencode "url=*.$1/*" \
-        --data-urlencode "collapse=urlkey" \
-        --data-urlencode "output=text" \
-        --data-urlencode "fl=original" \
-        --data-urlencode "filter=original:.*\.(x1s|xml|xlsx|json|pdf|sql|doc|docx|pptx|txt|git|zip|tar\.gz|tgz|bak|7z|rar|log|cache|secret|db|backup|yml|gz|config|csv|yaml|md|md5|exe|dll|bin|ini|bat|sh|tar|deb|rpm|iso|img|env|apk|msi|dmg|tmp|crt|pem|key|pub|asc)$" \
-        -A "Mozilla/5.0" | tee "$output_file"
-
-    if [[ ! -s "$output_file" ]]; then
-        echo "No results found for $1."
-        rm "$output_file"
-    else
-        echo "Results saved in $output_file"
-    fi
+#urls_extension_finder---------------------------------------------------->
+urls_ext_finder() {
+    read -p "Enter the target domain: " DOMAIN && \
+curl -s "https://web.archive.org/cdx/search/cdx?url=*.$DOMAIN/*&collapse=urlkey&output=text&fl=original&filter=original:.*\.(x1s|xml|xlsx|json|pdf|sql|doc|docx|pptx|txt|git|zip|tar.gz|tgz|bak|7z|rar|log|cache|secret|db|backup|yml|gz|config|csv|yaml|md|md5|exe|dll|bin|ini|bat|sh|tar|deb|rpm|iso|img|env|apk|msi|dmg|tmp|crt|pem|key|pub|asc)$" | sort -u | tee ext_output.txt
 }
 
-#ultra_subs_finder--------------------------------------------->
+#ultra_subs_finder--------------------------------------------------------->
 ultra_subs_finder() {
 # Check if a domain is provided
 if [ -z "$1" ]; then
@@ -106,7 +85,7 @@ echo -e "\033[1;34m[+] Subdomain enumeration completed!\033[0m"
 echo -e "\033[1;32m[+] Results saved in $output_file\033[0m"
 }
 
-#http_hv_finder------------------------------------------------->
+#http_hv_finder-------------------------------------------------------->
 http_hv_finder() {
     # Define color codes
 GREEN="\e[32m"
@@ -146,4 +125,35 @@ for METHOD in "${METHODS[@]}"; do
 
     echo -e "Method: $METHOD | Response: ${COLOR}$RESPONSE${RESET}"
 done
+}
+
+
+#jsleak for find potential secrets inside .js_file ---------------------------------------------->
+jsleak() {
+    TARGET_URL="$1"
+
+if [[ -z "$TARGET_URL" ]]; then
+    echo "Usage: $0 <target-url>"
+    exit 1
+fi
+
+echo "[+] Running waybackurls on $TARGET_URL..."
+waybackurls "$TARGET_URL" | sort -u | tee urls_output.txt
+
+echo "[+] Extracting .js files..."
+grep "\.js$" urls_output.txt > js_output.txt
+
+echo "[+] Fetching and scanning JavaScript files for secrets..."
+while read url; do
+    echo "[*] Searching in $url"
+    FOUND_SECRETS=$(curl -s "$url" | grep -i -E "(apiKey|token|client_secret|password|key|access_token|auth_token)")
+
+    if [[ ! -z "$FOUND_SECRETS" ]]; then
+        echo -e "\n[+] Found secrets in: $url"
+        echo -e "$FOUND_SECRETS\n"
+        echo -e "[+] URL: $url\n$FOUND_SECRETS\n" >> secrets_found.txt
+    fi
+done < js_output.txt
+
+echo "[+] Scan complete! Potential secrets saved in secrets_found.txt"
 }
