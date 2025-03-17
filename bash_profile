@@ -1,4 +1,4 @@
-#my_bash_alias
+#radha .bash_profile
 
 alias secretfinder="python3 /usr/local/bin/SecretFinder.py"
 
