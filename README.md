@@ -1,8 +1,9 @@
-# my_bash_alias# my_bash_alias
+# my_bash_alias
 
 Automate Download & install radha assets setup with a One-Liner command:
 VulnHunter101/my_bash_alias
 
+git clone https://github.com/VulnHunter101/my_bash_alias.git && cat my_bash_alias/bash_profile >> ~/.bash_profile && source ~/.bash_profile && chmod +x quick_setup_v4.sh && ./quick_setup_v4.sh
 
 
 1.Radha list of install alias from .bash_profile
