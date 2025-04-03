@@ -29,27 +29,18 @@ go install -v github.com/projectdiscovery/naabu/v2/cmd/naabu@latest
 go install -v github.com/ffuf/ffuf/v2@latest
 go install -v github.com/hakluke/hakrawler@latest
 
-# install sublis3r
-git clone https://github.com/aboul3la/Sublist3r.git /opt/Sublist3r
-cd /opt/Sublist3r
-sudo pip install -r requirements.txt --break-system-packages
-echo "alias sublist3r='python3 /opt/Sublist3r/sublist3r.py'" >> ~/.bashrc
-source .bashrc
-cd
-sudo ln -s /usr/bin/python3 /usr/bin/python
-
 # pip3 install toosl
 pip3 install wafw00f dirsearch --break-system-packages
 
 # apt isntall tools
-sudo apt install dnsrecon nmap whatweb -y
+sudo apt install dnsrecon nmap whatweb sublist3r -y
 
 # install ipinfo
 echo "deb [trusted=yes] https://ppa.ipinfo.net/ /" | sudo tee  "/etc/apt/sources.list.d/ipinfo.ppa.list"
 sudo apt update
 sudo apt install ipinfo
 
-## Automatically add source ~/.bash_profile to .bashrc---------------------------------->
+## Automatically add source ~/.bash_profile to .bashrc
 cd
 echo 'source ~/.bash_profile' >> ~/.bashrc
 source ~/.bashrc
