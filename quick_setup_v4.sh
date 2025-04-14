@@ -28,12 +28,21 @@ go install -v github.com/tomnomnom/waybackurls@latest
 go install -v github.com/projectdiscovery/naabu/v2/cmd/naabu@latest
 go install -v github.com/ffuf/ffuf/v2@latest
 go install -v github.com/hakluke/hakrawler@latest
+go install -v github.com/projectdiscovery/dnsx/cmd/dnsx@latest
 
 # pip3 install toosl
 pip3 install wafw00f dirsearch --break-system-packages
 
 # apt isntall tools
 sudo apt install dnsrecon nmap whatweb sublist3r -y
+
+# install SecretFinder
+git clone https://github.com/m4ll0k/SecretFinder.git /opt/SecretFinder
+cd /opt/SecretFinder 
+sudo pip install -r requirements.txt --break-system-packages
+echo "alias secretfinder='python3 /opt/SecretFinder/SecretFinder.py'" >> ~/.bashrc
+source .bashrc
+cd
 
 # install ipinfo
 echo "deb [trusted=yes] https://ppa.ipinfo.net/ /" | sudo tee  "/etc/apt/sources.list.d/ipinfo.ppa.list"
