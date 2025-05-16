@@ -25,16 +25,24 @@ go install -v github.com/tomnomnom/anew@latest
 go install -v github.com/tomnomnom/assetfinder@latest
 go install -v github.com/lc/gau/v2/cmd/gau@latest
 go install -v github.com/tomnomnom/waybackurls@latest
-go install -v github.com/projectdiscovery/naabu/v2/cmd/naabu@latest
 go install -v github.com/ffuf/ffuf/v2@latest
 go install -v github.com/hakluke/hakrawler@latest
 go install -v github.com/projectdiscovery/dnsx/cmd/dnsx@latest
+go install -v github.com/tomnomnom/unfurl@latest
+
+sudo mv ~/go/bin/* /usr/local/bin/
 
 # pip3 install toosl
-pip3 install wafw00f dirsearch --break-system-packages
+pip3 install wafw00f --break-system-packages
 
 # apt isntall tools
-sudo apt install dnsrecon nmap whatweb sublist3r -y
+sudo apt install dnsrecon nmap sublist3r wafw00f -y
+
+# install dirsearch
+git clone https://github.com/maurosoria/dirsearch.git /opt/dirsearch
+cd /opt/dirsearch
+sudo pip install -r requirements.txt --break-system-packages
+# [bash_profile ok]
 
 # install SecretFinder
 git clone https://github.com/m4ll0k/SecretFinder.git /opt/SecretFinder
