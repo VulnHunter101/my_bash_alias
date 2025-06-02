@@ -38,14 +38,6 @@ sudo mv ~/go/bin/* /usr/local/bin/
 # apt isntall tools
 sudo apt install dnsrecon nmap sublist3r wafw00f dirsearch -y
 
-# install dirsearch
-
-
-# install SecretFinder
-
-# install ipinfo
-
-
 ## Automatically add source ~/.bash_profile to .bashrc
 cd
 echo 'source ~/.bash_profile' >> ~/.bashrc
